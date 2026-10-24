@@ -3,9 +3,12 @@
 const CLOUD_KEY="kapnanda_supabase_config_v1";
 // Default Supabase connection. The publishable/anon key is safe for browser use
 // when Row Level Security (RLS) is correctly configured. NEVER put a service-role key here.
-const DEFAULT_SUPABASE_CONFIG={
-  url:"", // Configure your own Supabase project URL before deployment.
-  anonKey:"" // Configure your own Supabase publishable/anon key before deployment.
+
+const DEFAULT_SUPABASE_CONFIG = {
+  url: "https://stgicmgdgwknzpjzytzz.supabase.co",
+  anonKey: "sb_publishable_B0nMexZAxVEN7Qe4O2dAkQ__W-Q6OgU"
+};
+
 };
 const SHARED_STATE_ID="ELIMU_PULSE";
 let cloud=null, cloudReady=false, cloudUser=null, cloudSyncBusy=false, cloudSavePending=false;
