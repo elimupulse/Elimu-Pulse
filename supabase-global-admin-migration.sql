@@ -30,13 +30,20 @@ $function$;
 revoke all on function public.is_global_admin() from public, anon;
 grant execute on function public.is_global_admin() to authenticated;
 
--- Seed only the explicitly named global-admin account if it already exists in Auth.
+-- Seed only the explicitly identified existing Auth account (UUID and email must both match).
 -- If it is absent, this inserts nothing; create/confirm the Auth user before rerunning.
 insert into public.global_admins (user_id)
 select u.id
 from auth.users u
-where lower(u.email) = lower('elimu@pulse.school')
+where u.id = '868e8202-b3af-496f-8f9e-55dd2f5b23ab'::uuid
+  and lower(u.email) = lower('shadrackkorir644@gmail.com')
 on conflict (user_id) do nothing;
+
+-- Verify the exact account was found and authorized:
+-- select u.id, u.email, ga.created_at
+-- from public.global_admins ga
+-- join auth.users u on u.id = ga.user_id
+-- where u.id = '868e8202-b3af-496f-8f9e-55dd2f5b23ab'::uuid;
 
 -- Rebuild policies on tenant tables from a known-safe set. This removes any stale
 -- permissive policy that might otherwise allow cross-school access. Rows are untouched.
@@ -161,5 +168,5 @@ commit;
 -- select schemaname, tablename, policyname, cmd
 -- from pg_policies
 -- where schemaname='public'
---   and tablename in ('global_admins','schools','school_users','school_state')
+-- and tablename in ('global_admins','schools','school_users','school_state')
 -- order by tablename, policyname;
